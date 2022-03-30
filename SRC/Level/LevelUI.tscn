@@ -1,0 +1,103 @@
+[gd_scene load_steps=4 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.0862745, 0.0862745, 0.101961, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0862745, 0.0862745, 0.101961, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.0862745, 0.0862745, 0.101961, 1 )
+
+[node name="Panel" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Margin" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Split" type="HSplitContainer" parent="Margin"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 1014.0
+margin_bottom = 590.0
+custom_constants/separation = 10
+split_offset = 200
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tools" type="Panel" parent="Margin/Split"]
+margin_right = 200.0
+margin_bottom = 580.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Split/Tools"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Play" type="VSplitContainer" parent="Margin/Split"]
+margin_left = 210.0
+margin_right = 1004.0
+margin_bottom = 580.0
+custom_constants/separation = 10
+split_offset = 285
+
+[node name="World" type="Panel" parent="Margin/Split/Play"]
+margin_right = 794.0
+margin_bottom = 285.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="Margin" type="MarginContainer" parent="Margin/Split/Play/World"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="ViewportContainer" parent="Margin/Split/Play/World/Margin"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 784.0
+margin_bottom = 275.0
+
+[node name="Code" type="Panel" parent="Margin/Split/Play"]
+margin_top = 295.0
+margin_right = 794.0
+margin_bottom = 580.0
+custom_styles/panel = SubResource( 3 )
+
+[node name="Margin" type="MarginContainer" parent="Margin/Split/Play/Code"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="ViewportContainer" parent="Margin/Split/Play/Code/Margin"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 784.0
+margin_bottom = 275.0
