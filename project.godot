@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Sprite",
+"class": "Cell",
+"language": "GDScript",
+"path": "res://SRC/Level/Cell.gd"
+} ]
+_global_script_class_icons={
+"Cell": ""
+}
+
 [application]
 
 config/name="Zachtronic"
