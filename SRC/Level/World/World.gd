@@ -14,7 +14,7 @@ var cells := {}
 var translations := {}
 var rotations := {}
 
-var _cell = preload("res://SRC/Level/Cell.tscn")
+var _cell = preload("res://SRC/Level/World/Cell.tscn")
 
 func _ready() -> void:
 	make_new_cell(Vector3.ZERO)
@@ -25,16 +25,15 @@ func _ready() -> void:
 	make_new_cell(Vector3(0,1,-1))
 	make_new_cell(Vector3(0,-1,1))
 	join_positions(Vector3.ZERO, Vector3(1,-1,0))
-	print(positions)
-	rotate_position(Vector3(1,-1,0), 3)
-	#move_position(Vector3(1,-1,0), Vector3(1,-1,0))
-	print(positions)
+	move_position(Vector3(1,-1,0), Vector3(1,-1,0))
 	start()
 	yield(self, "done")
 	join_positions(Vector3(0,-1,1),Vector3(1,-1,0))
 	move_position(Vector3(1,-1,0), Vector3(1,-1,0))
 	start()
 	yield(self, "done")
+	rotate_position(Vector3(1,-2,1), -2)
+	start()
 
 func _process(delta: float) -> void:
 	if playing:
@@ -96,8 +95,10 @@ func rotate_position(pos: Vector3, dir: int) -> void:
 			positions.erase(cell.coord+coord)
 		for child in cell.get_children():
 			child.position -= coord_to_world(pos-cell.coord)
-		for coord in cell.cells:
-			positions[pos+rotate_around(coord+cell.coord-pos, Vector3.ZERO, dir)] = cell_id
+		for i in range(len(cell.cells)):
+			cell.cells[i] -= pos-cell.coord
+			cell.cells[i] = rotate_around(cell.cells[i], Vector3.ZERO, dir)
+			positions[pos+cell.cells[i]] = cell_id
 		cell.coord = pos
 		cell.position = coord_to_world(pos)
 		rotations[cell_id] = dir
@@ -108,12 +109,21 @@ func join_cells(cell_id_a: int, cell_id_b: int) -> void:
 		var cell_b: Group = cells[cell_id_b]
 		for pos in cells[cell_id_b].cells:
 			cell_a.cells.append(pos + cell_b.coord - cell_a.coord)
-			positions[pos + cell_b.coord - cell_a.coord] = cell_id_a
+			positions[pos + cell_b.coord] = cell_id_a
 		for child in cell_b.get_children():
 			var pos = child.global_position
 			cell_b.remove_child(child)
 			cell_a.add_child(child)
 			child.global_position = pos
+		clear_cell(cell_id_b)
+
+
+func clear_cell(cell_id: int) -> void:
+	if not cell_id in cells:
+		return
+	cells[cell_id].queue_free()
+	cells.erase(cell_id)
+
 
 func join_positions(pos_a: Vector3, pos_b: Vector3) -> void:
 	if pos_a in positions and pos_b in positions:

@@ -12,16 +12,22 @@ _global_script_classes=[ {
 "base": "Sprite",
 "class": "Cell",
 "language": "GDScript",
-"path": "res://SRC/Level/Cell.gd"
+"path": "res://SRC/Level/World/Cell.gd"
 }, {
 "base": "Node2D",
 "class": "Group",
 "language": "GDScript",
-"path": "res://SRC/Level/Group.gd"
+"path": "res://SRC/Level/World/Group.gd"
+}, {
+"base": "Node2D",
+"class": "Machine",
+"language": "GDScript",
+"path": "res://SRC/Level/Panel/Machine.gd"
 } ]
 _global_script_class_icons={
 "Cell": "",
-"Group": ""
+"Group": "",
+"Machine": ""
 }
 
 [application]
