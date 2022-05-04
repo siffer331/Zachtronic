@@ -1,12 +1,22 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://SRC/Level/Panel/Machine.tscn" type="PackedScene" id=1]
-[ext_resource path="res://SRC/Level/Panel/Panel.gd" type="Script" id=2]
+[ext_resource path="res://SRC/Level/Panel/MachineManager.gd" type="Script" id=2]
 
-[node name="Panel" type="Node2D"]
+[node name="MachineManager" type="Node2D"]
 script = ExtResource( 2 )
 space = Vector2( 20, 10 )
+offset = Vector2( 25, 25 )
+grabing_colour = Color( 1, 1, 1, 0.694118 )
+invalid_colour = Color( 0.85098, 0.223529, 0.223529, 0.694118 )
 
 [node name="Machine" parent="." instance=ExtResource( 1 )]
 position = Vector2( 68, 50 )
 size = Vector2( 3, 3 )
+plug_counts = [ [ 0 ], [ 1, 0 ] ]
+
+[node name="Machine2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 227, 154 )
+size = Vector2( 2, 3 )
+plug_counts = [ [ 1, 0, 1 ], [ 0 ] ]
+transpose_plugs = true
