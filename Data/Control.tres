@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://SRC/Level/Data/MachineData.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Machines/Control.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Control"
+description = "Outputs the first input if the second input is not zero otherwise et returns zero."
+sprite = ExtResource( 2 )
+plugs = [ [ 0, 0 ], [ 1 ] ]
+transpose_plugs = true
+scene = "res://SRC/Machines/Control.tscn"
+size = Vector2( 2, 2 )
+shape = [  ]
+colour = Color( 0.396078, 0.290196, 0.207843, 1 )
+solid = false
+calc = true
+priority = 0

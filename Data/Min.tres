@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://SRC/Level/Data/MachineData.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Machines/Min.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Min"
+description = "Outputs the minimum of the inputs"
+sprite = ExtResource( 2 )
+plugs = [ [ 0, 0, 0 ], [ 1 ] ]
+transpose_plugs = true
+scene = "res://SRC/Machines/Min.tscn"
+size = Vector2( 2, 3 )
+shape = [  ]
+colour = Color( 0.290196, 0.262745, 0.243137, 1 )
+solid = false
+calc = true
+priority = 0

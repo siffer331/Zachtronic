@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://SRC/Level/Data/MachineData.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Machines/Replicate.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Replicate"
+description = "Replicates the input into the three outputs."
+sprite = ExtResource( 2 )
+plugs = [ [ 0 ], [ 1, 1, 1 ] ]
+transpose_plugs = true
+scene = "res://SRC/Machines/Replicate.tscn"
+size = Vector2( 2, 3 )
+shape = [  ]
+colour = Color( 0.207843, 0.176471, 0.12549, 1 )
+solid = false
+calc = true
+priority = 0

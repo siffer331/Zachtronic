@@ -1,6 +1,18 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://SRC/Level/World/World.tscn" type="PackedScene" id=1]
+[ext_resource path="res://SRC/Level/Panel/Panel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://SRC/Util/ResizeingViewport.gd" type="Script" id=3]
+[ext_resource path="res://SRC/Level/LevelUI.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Theme.tres" type="Theme" id=5]
+[ext_resource path="res://Assets/UI/PlayPause1.png" type="Texture" id=6]
+[ext_resource path="res://Assets/UI/PlayPause3.png" type="Texture" id=7]
+[ext_resource path="res://Assets/UI/PlayPause2.png" type="Texture" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.0862745, 0.0862745, 0.101961, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.0862745, 0.0862745, 0.101961, 1 )
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -9,95 +21,203 @@ bg_color = Color( 0.0862745, 0.0862745, 0.101961, 1 )
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.0862745, 0.0862745, 0.101961, 1 )
 
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.145098, 0.145098, 0.164706, 1 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0.129412, 0.129412, 0.152941, 1 )
+
 [node name="Panel" type="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+theme = ExtResource( 5 )
+script = ExtResource( 4 )
+world_path = NodePath("Margin/Split/Play/World/Margin/Viewport/Viewport/World")
+manager_path = NodePath("Margin/Split/Play/Code/Margin/Viewport/Viewport/MachineManager")
 
 [node name="Margin" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 10
-custom_constants/margin_top = 10
-custom_constants/margin_left = 10
-custom_constants/margin_bottom = 10
-__meta__ = {
-"_edit_use_anchors_": false
-}
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
 
 [node name="Split" type="HSplitContainer" parent="Margin"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 1014.0
-margin_bottom = 590.0
-custom_constants/separation = 10
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 507.0
+margin_bottom = 295.0
+custom_constants/separation = 5
 split_offset = 200
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tools" type="Panel" parent="Margin/Split"]
+[node name="Split" type="VBoxContainer" parent="Margin/Split"]
 margin_right = 200.0
-margin_bottom = 580.0
+margin_bottom = 290.0
+
+[node name="Tools" type="Panel" parent="Margin/Split/Split"]
+margin_right = 200.0
+margin_bottom = 246.0
+size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Margin/Split/Tools"]
+[node name="Scroll" type="ScrollContainer" parent="Margin/Split/Split/Tools"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="Split" type="VBoxContainer" parent="Margin/Split/Split/Tools/Scroll"]
+margin_right = 200.0
+size_flags_horizontal = 3
+
+[node name="Play" type="Panel" parent="Margin/Split/Split"]
+margin_top = 250.0
+margin_right = 200.0
+margin_bottom = 290.0
+rect_min_size = Vector2( 0, 40 )
+custom_styles/panel = SubResource( 4 )
+
+[node name="Margin" type="MarginContainer" parent="Margin/Split/Split/Play"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="Split" type="HBoxContainer" parent="Margin/Split/Split/Play/Margin"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 195.0
+margin_bottom = 35.0
+
+[node name="Play" type="TextureButton" parent="Margin/Split/Split/Play/Margin/Split"]
+margin_right = 30.0
+margin_bottom = 30.0
+texture_normal = ExtResource( 6 )
+texture_pressed = ExtResource( 7 )
+texture_hover = ExtResource( 8 )
+
+[node name="Slider" type="HSlider" parent="Margin/Split/Split/Play/Margin/Split"]
+margin_left = 34.0
+margin_right = 157.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.25
+max_value = 16.0
+step = 0.25
+value = 1.0
+exp_edit = true
+
+[node name="Task" type="Button" parent="Margin/Split/Split/Play/Margin/Split"]
+margin_left = 161.0
+margin_right = 190.0
+margin_bottom = 30.0
+text = "Task"
 
 [node name="Play" type="VSplitContainer" parent="Margin/Split"]
-margin_left = 210.0
-margin_right = 1004.0
-margin_bottom = 580.0
-custom_constants/separation = 10
-split_offset = 285
+margin_left = 208.0
+margin_right = 502.0
+margin_bottom = 290.0
+custom_constants/separation = 5
+split_offset = 142
 
 [node name="World" type="Panel" parent="Margin/Split/Play"]
-margin_right = 794.0
-margin_bottom = 285.0
+margin_right = 294.0
+margin_bottom = 142.0
 custom_styles/panel = SubResource( 2 )
 
 [node name="Margin" type="MarginContainer" parent="Margin/Split/Play/World"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 10
-custom_constants/margin_top = 10
-custom_constants/margin_left = 10
-custom_constants/margin_bottom = 10
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Viewport" type="ViewportContainer" parent="Margin/Split/Play/World/Margin"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 784.0
-margin_bottom = 275.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 289.0
+margin_bottom = 137.0
+stretch = true
+script = ExtResource( 3 )
+
+[node name="Viewport" type="Viewport" parent="Margin/Split/Play/World/Margin/Viewport"]
+size = Vector2( 284, 132 )
+handle_input_locally = false
+render_target_update_mode = 3
+physics_object_picking = true
+
+[node name="World" parent="Margin/Split/Play/World/Margin/Viewport/Viewport" instance=ExtResource( 1 )]
 
 [node name="Code" type="Panel" parent="Margin/Split/Play"]
-margin_top = 295.0
-margin_right = 794.0
-margin_bottom = 580.0
+margin_top = 150.0
+margin_right = 294.0
+margin_bottom = 290.0
 custom_styles/panel = SubResource( 3 )
 
 [node name="Margin" type="MarginContainer" parent="Margin/Split/Play/Code"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 10
-custom_constants/margin_top = 10
-custom_constants/margin_left = 10
-custom_constants/margin_bottom = 10
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Viewport" type="ViewportContainer" parent="Margin/Split/Play/Code/Margin"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 784.0
-margin_bottom = 275.0
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 289.0
+margin_bottom = 135.0
+stretch = true
+script = ExtResource( 3 )
+
+[node name="Viewport" type="Viewport" parent="Margin/Split/Play/Code/Margin/Viewport"]
+size = Vector2( 500, 500 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="MachineManager" parent="Margin/Split/Play/Code/Margin/Viewport/Viewport" instance=ExtResource( 2 )]
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Popup" type="Popup" parent="."]
+margin_left = 100.0
+margin_top = 63.0
+margin_right = 402.0
+margin_bottom = 232.0
+
+[node name="Panel" type="Panel" parent="Popup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 5 )
+
+[node name="Center" type="CenterContainer" parent="Popup/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="Popup/Panel/Center"]
+margin_left = 151.0
+margin_top = 79.0
+margin_right = 151.0
+margin_bottom = 89.0
+align = 1
+valign = 1
+
+[connection signal="pressed" from="Margin/Split/Split/Play/Margin/Split/Play" to="." method="_on_Play_pressed"]
+[connection signal="value_changed" from="Margin/Split/Split/Play/Margin/Split/Slider" to="." method="_on_Slider_value_changed"]
+[connection signal="pressed" from="Margin/Split/Split/Play/Margin/Split/Task" to="." method="_on_Task_pressed"]
+[connection signal="done" from="Margin/Split/Play/World/Margin/Viewport/Viewport/World" to="." method="_on_World_done"]
+[connection signal="error" from="Margin/Split/Play/World/Margin/Viewport/Viewport/World" to="." method="_on_World_error"]
+[connection signal="output" from="Margin/Split/Play/World/Margin/Viewport/Viewport/World" to="." method="_on_World_output"]

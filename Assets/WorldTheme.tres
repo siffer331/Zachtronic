@@ -1,0 +1,20 @@
+[gd_resource type="Theme" load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Pix.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/UI/Icon.png" type="Texture" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
+[sub_resource type="DynamicFont" id=2]
+size = 6
+extra_spacing_space = -1
+font_data = ExtResource( 1 )
+
+[resource]
+default_font = SubResource( 2 )
+LineEdit/constants/minimum_spaces = 8
+LineEdit/styles/focus = SubResource( 4 )
+LineEdit/styles/normal = SubResource( 5 )
+SpinBox/icons/updown = ExtResource( 2 )

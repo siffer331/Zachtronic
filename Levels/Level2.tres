@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://SRC/Level/Data/LevelData.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+input_shape = [ Vector3( 0, 0, 0 ) ]
+input_values = [ [ 1 ], [ 2 ], [ 2 ], [ 1 ], [ 2 ], [ 1 ], [ 1 ], [ 2 ] ]
+output_shapes = [ [ Vector3( 0, 0, 0 ), Vector3( 1, 0, -1 ), Vector3( 1, -1, 0 ) ], [ Vector3( 0, 0, 0 ), Vector3( 1, 0, -1 ) ], [ Vector3( 0, 0, 0 ), Vector3( 1, 0, -1 ) ], [ Vector3( 0, 0, 0 ), Vector3( 1, 0, -1 ), Vector3( 1, -1, 0 ) ], [ Vector3( 0, 0, 0 ), Vector3( 1, 0, -1 ) ], [ Vector3( 0, 0, 0 ), Vector3( 1, 0, -1 ), Vector3( 1, -1, 0 ) ], [ Vector3( 0, 0, 0 ), Vector3( 1, 0, -1 ), Vector3( 1, -1, 0 ) ], [ Vector3( 0, 0, 0 ), Vector3( 1, 0, -1 ) ] ]
+output_values = [ [ 100, 100, 100 ], [ 100, 100 ], [ 100, 100 ], [ 100, 100, 100 ], [ 100, 100 ], [ 100, 100, 100 ], [ 100, 100, 100 ], [ 100, 100 ] ]
+task = "If the input is 1, output at triangle of 3 cells.
+ If the input is 2 output a line of 2 hexes"

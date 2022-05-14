@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/WorldTheme.tres" type="Theme" id=1]
+[ext_resource path="res://Assets/Machines/ConstantWorld.png" type="Texture" id=3]
+[ext_resource path="res://SRC/Machines/Scripts/Constant.gd" type="Script" id=4]
+
+[node name="Constant" type="Sprite"]
+texture = ExtResource( 3 )
+script = ExtResource( 4 )
+
+[node name="Num" type="SpinBox" parent="."]
+margin_left = -6.0
+margin_top = -3.0
+margin_right = 6.0
+margin_bottom = 3.0
+theme = ExtResource( 1 )
+min_value = -99.0
+max_value = 99.0
+align = 2

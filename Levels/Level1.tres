@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://SRC/Level/Data/LevelData.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+input_shape = [ Vector3( 0, 0, 0 ) ]
+input_values = [ [ 20 ], [ 25 ], [ 45 ], [ 10 ], [ -20 ], [ 0 ], [ 40 ], [ -35 ], [ 30 ], [ -25 ] ]
+output_shapes = [ [ Vector3( 0, 0, 0 ) ], [ Vector3( 0, 0, 0 ) ], [ Vector3( 0, 0, 0 ) ], [ Vector3( 0, 0, 0 ) ], [ Vector3( 0, 0, 0 ) ], [ Vector3( 0, 0, 0 ) ], [ Vector3( 0, 0, 0 ) ], [ Vector3( 0, 0, 0 ) ], [ Vector3( 0, 0, 0 ) ], [ Vector3( 0, 0, 0 ) ] ]
+output_values = [ [ 40 ], [ 50 ], [ 90 ], [ 20 ], [ -40 ], [ 0 ], [ 80 ], [ -70 ], [ 60 ], [ -50 ] ]
+task = "Output a cell with double the value of the input. "

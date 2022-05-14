@@ -3,4 +3,4 @@ extends Node2D
 
 
 var coord: Vector3
-var cells := []
+var cells := {}

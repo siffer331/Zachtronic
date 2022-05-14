@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://SRC/Level/Data/MachineData.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Machines/Max.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Max"
+description = "Outputs the maximum of the inputs"
+sprite = ExtResource( 2 )
+plugs = [ [ 0, 0, 0 ], [ 1 ] ]
+transpose_plugs = true
+scene = "res://SRC/Machines/Max.tscn"
+size = Vector2( 2, 3 )
+shape = [  ]
+colour = Color( 0.443137, 0.25098, 0.203922, 1 )
+solid = false
+calc = true
+priority = 0

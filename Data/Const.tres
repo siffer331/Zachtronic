@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://SRC/Level/Data/MachineData.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Machines/Constant.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Constant"
+description = "Outputs the typed in value."
+sprite = ExtResource( 2 )
+plugs = [ [ 1 ] ]
+transpose_plugs = false
+scene = "res://SRC/Machines/Constant.tscn"
+size = Vector2( 1, 1 )
+shape = [ Vector3( 0, 0, 0 ) ]
+colour = Color( 0.180392, 0.137255, 0.137255, 1 )
+solid = false
+calc = true
+priority = 0
