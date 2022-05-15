@@ -7,6 +7,7 @@ var world: WorldManager
 var playing: bool setget _set_playing
 var level_index := 0
 var error := false
+var place_input := false
 
 func _ready() -> void:
 	manager = get_node(manager_path)
@@ -44,14 +45,16 @@ func _on_MachineUI_placed(data: MachineData) -> void:
 	world_machine.connect("delete", self, "_on_WorldMachine_delete")
 
 
-func _on_Machine_delete(machine: Machine) -> void:
-	world.delete_machine(machine.other)
-	manager.delete_machine(machine)
+func _on_Machine_delete(machine) -> void:
+	if manager.can_delete() and world.can_delete() and not playing:
+		world.delete_machine(machine.other)
+		manager.delete_machine(machine)
 
 
 func _on_WorldMachine_delete(machine: WorldMachine) -> void:
-	manager.delete_machine(machine.other)
-	world.delete_machine(machine)
+	if manager.can_delete() and world.can_delete() and not playing:
+		manager.delete_machine(machine.other)
+		world.delete_machine(machine)
 
 
 func _on_Play_pressed() -> void:
@@ -66,7 +69,8 @@ func _on_Play_pressed() -> void:
 			error = false
 			self.playing = true
 			world.stop()
-			_make_input(0)
+			world.cycles = 0
+			place_input = true
 			_on_World_done()
 	else:
 		self.playing = false
@@ -96,6 +100,9 @@ func _set_playing(val: bool) -> void:
 func _on_World_done() -> void:
 	if error:
 		return
+	if place_input:
+		_make_input(level_index)
+		place_input = false
 	manager.handle_calculations()
 	manager.interact(world)
 	world.start()
@@ -117,16 +124,16 @@ func _on_Task_pressed() -> void:
 
 
 func _on_World_output(shape: Array, values: Array, cell_id: int) -> void:
+	print(values)
 	if world.compare_shapes(shape, values, GM.level.output_shapes[level_index], GM.level.output_values[level_index]):
 		level_index += 1
-		print("k ", level_index)
 		if level_index == len(GM.level.input_values):
 			error = true
-			$Popup/Panel/Center/Label.text = "You win the level!"
+			$Popup/Panel/Center/Label.text = "You won the level!\nCycles: " + str(world.cycles) + " Machines: " + str(len(manager.machines))
 			$Popup.popup()
 		else:
 			world.clear_cell(cell_id)
-			_make_input(level_index)
+			place_input = true
 	else:
 		error = true
 		_on_World_error("Wrong output")

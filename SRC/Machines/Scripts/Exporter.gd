@@ -12,7 +12,7 @@ func handle() -> void:
 
 func interact(world: WorldManager) -> void:
 	if value > 0:
-		world.output_position(world.get_point_on_line(coord, world.dirs[self.frame]))
+		world.output_position(coord, world.dirs[self.frame])
 	if value < 0:
-		world.delete_position(world.get_point_on_line(coord, world.dirs[self.frame]))
+		world.delete_position(coord, world.dirs[self.frame])
 

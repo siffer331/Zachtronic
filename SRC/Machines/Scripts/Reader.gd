@@ -9,6 +9,7 @@ func handle() -> void:
 func get_output() -> void:
 	var cell = get_parent().get_cell(coord)
 	other.plugs[2].value = 0
+	other.plugs[1].value = 0
 	if cell:
 		other.plugs[1].value = cell.value
 		other.plugs[2].value = 1

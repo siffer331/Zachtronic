@@ -38,6 +38,12 @@ func _process(delta: float) -> void:
 		dragging.setup(_get_mouse())
 
 
+func can_delete() -> bool:
+	if dragging or holding:
+		return false
+	return true
+
+
 func _unhandled_input(event: InputEvent) -> void:
 	if dragging and event.is_action_released("pickup"):
 		wires.erase(dragging.start)
@@ -60,8 +66,6 @@ func make_machine(data: MachineData) -> Machine:
 
 
 func delete_machine(machine: Machine) -> void:
-	if locked:
-		return
 	set_machine_space(machine, false)
 	for plug in machine.plugs:
 		if plug in wires:
@@ -181,6 +185,8 @@ func _on_Machine_picked_up(machine: Machine, pressed: bool) -> void:
 		holding.modulate = grabing_colour
 		set_machine_space(holding, false)
 	else:
+		if locked:
+			return
 		machine.z_index = 0
 		if is_space_used(_get_coord(holding.position), holding.size):
 			holding.position = holding_start_coord*Machine.GRID_SIZE
@@ -200,6 +206,8 @@ func _on_plug_dragged(plug: Plug, machine: Machine) -> void:
 		dragging = wires[plug]
 		wires.erase(plug)
 	else:
+		if locked:
+			return
 		var wire = Wire.new()
 		add_child(wire)
 		wires[plug] = wire
@@ -208,7 +216,9 @@ func _on_plug_dragged(plug: Plug, machine: Machine) -> void:
 
 
 func _on_plug_dropped(plug: Plug, machine: Machine) -> void:
-	if dragging.start.get_parent() == plug.get_parent() or dragging.start.type == plug.type:
+	if locked:
+		return
+	if dragging.start.get_parent() == plug.get_parent() or dragging.start.type == plug.type or plug in wires:
 		wires.erase(dragging.start)
 		dragging.queue_free()
 		return
@@ -244,8 +254,8 @@ func _get_coord(val: Vector2) -> Vector2:
 
 func _init_mouse(var from: Vector2 = Vector2.ZERO) -> void:
 	speed = 512/get_viewport().get_parent().get_viewport().size.x
-	start = get_viewport().get_mouse_position()*speed - from
+	start = get_viewport().get_mouse_position()*speed*$MoveableCamera.zoom - from
 
 
 func _get_mouse() -> Vector2:
-	return get_viewport().get_mouse_position()*speed - start
+	return get_viewport().get_mouse_position()*speed*$MoveableCamera.zoom - start

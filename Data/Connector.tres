@@ -16,4 +16,4 @@ shape = [ Vector3( 0, 0, 0 ), Vector3( 1, 0, -1 ) ]
 colour = Color( 0.258824, 0.25098, 0.352941, 1 )
 solid = false
 calc = false
-priority = 3
+priority = 1

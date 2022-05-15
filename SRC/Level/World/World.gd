@@ -19,8 +19,12 @@ var rotations := {}
 var machines := {}
 var speed := 1.0
 var start := Vector2.ZERO
+var drag_rotations := 0
 var changes := [[],[]]
 var locked := false
+var cycles := 0
+var exports := []
+var deletions := []
 
 var dragging: WorldMachine = null
 var dragging_from := Vector3.ZERO
@@ -35,12 +39,16 @@ func _process(delta: float) -> void:
 			time = 1.0
 			playing = false
 		for id in translations:
+			if not id in cells:
+				continue
 			cells[id].position = lerp(
 				WorldMachine.coord_to_world(cells[id].coord-translations[id]),
 				WorldMachine.coord_to_world(cells[id].coord),
 				time
 			)
 		for id in rotations:
+			if not id in cells:
+				continue
 			cells[id].rotation = lerp(0, PI*rotations[id]/3, time)
 		if not playing:
 			for id in rotations:
@@ -49,6 +57,16 @@ func _process(delta: float) -> void:
 				cells[id].rotation = 0
 			translations.clear()
 			rotations.clear()
+			cycles += 1
+			for ar in exports:
+				var coord = get_point_on_line(ar[0], ar[1])
+				export_coord(coord)
+			exports = []
+			for ar in deletions:
+				var coord = get_point_on_line(ar[0], ar[1])
+				if coord in positions:
+					clear_cell(positions[coord])
+			deletions = []
 			emit_signal("done")
 	if dragging:
 		var coord := WorldMachine.world_to_coord(_get_mouse())
@@ -60,12 +78,20 @@ func _process(delta: float) -> void:
 			dragging.modulate = invalid_colour
 
 
+func can_delete() -> bool:
+	if dragging:
+		return false
+	return true
+
+
 func _input(event: InputEvent) -> void:
 	if dragging:
 		if event.is_action_pressed("scroll_down"):
 			dragging.rotate_machine(1)
+			drag_rotations += 1
 		if event.is_action_pressed("scroll_up"):
 			dragging.rotate_machine(-1)
+			drag_rotations -= 1
 
 
 func make_input(shape: Array, value: Array) -> void:
@@ -82,7 +108,7 @@ func make_error(msg: String):
 
 
 func get_cell(pos: Vector3) -> Cell:
-	if pos in positions:
+	if pos in positions and positions[pos] in cells:
 		return cells[positions[pos]].cells[pos-cells[positions[pos]].coord]
 	return null
 
@@ -190,9 +216,12 @@ func rotate_position(pos: Vector3, dir: int) -> void:
 
 
 func join_cells(cell_id_a: int, cell_id_b: int) -> void:
+	if not cell_id_a in cells or not cell_id_b in cells:
+		return
 	if cell_id_a != cell_id_b:
 		var cell_a: Group = cells[cell_id_a]
 		var cell_b: Group = cells[cell_id_b]
+		clear_cell(cell_id_b)
 		for pos in cell_b.cells:
 			var child = cell_b.cells[pos]
 			cell_a.cells[pos + cell_b.coord - cell_a.coord] = child
@@ -201,10 +230,32 @@ func join_cells(cell_id_a: int, cell_id_b: int) -> void:
 			cell_b.remove_child(child)
 			cell_a.add_child(child)
 			child.global_position = child_pos
-		clear_cell(cell_id_b)
 
 
-func output_position(coord: Vector3) -> void:
+func output_position(coord: Vector3, dir: Vector3) -> void:
+	exports.append([coord, dir])
+
+
+func clear_cell(cell_id: int, free := true) -> void:
+	if not cell_id in cells:
+		return
+	for coord in cells[cell_id].cells:
+		positions.erase(coord + cells[cell_id].coord)
+	if free:
+		cells[cell_id].queue_free()
+	cells.erase(cell_id)
+
+
+func delete_position(coord: Vector3, dir: Vector3) -> void:
+	deletions.append([coord, dir])
+
+
+func join_positions(pos_a: Vector3, pos_b: Vector3) -> void:
+	if pos_a in positions and pos_b in positions:
+		join_cells(positions[pos_a], positions[pos_b])
+
+
+func export_coord(coord: Vector3) -> void:
 	if coord in positions:
 		var shape := []
 		var values := []
@@ -213,25 +264,6 @@ func output_position(coord: Vector3) -> void:
 			shape.append(pos)
 			values.append(group.cells[pos].value)
 		emit_signal("output", shape, values, positions[coord])
-
-
-func clear_cell(cell_id: int) -> void:
-	if not cell_id in cells:
-		return
-	for coord in cells[cell_id].cells:
-		positions.erase(coord + cells[cell_id].coord)
-	cells[cell_id].queue_free()
-	cells.erase(cell_id)
-
-
-func delete_position(coord: Vector3) -> void:
-	if coord in positions:
-		clear_cell(positions[coord])
-
-
-func join_positions(pos_a: Vector3, pos_b: Vector3) -> void:
-	if pos_a in positions and pos_b in positions:
-		join_cells(positions[pos_a], positions[pos_b])
 
 
 func start() -> void:
@@ -272,8 +304,12 @@ func _on_Machine_picked_up(machine: WorldMachine, pressed: bool) -> void:
 		dragging = machine
 		dragging.modulate = grabing_colour
 		dragging_from = machine.coord
+		drag_rotations = 0
 	else:
+		if locked:
+			return
 		if not _is_free(machine.coord, machine.shape):
+			machine.rotate_machine(-drag_rotations)
 			machine.coord = dragging_from
 		machine.position = WorldMachine.coord_to_world(machine.coord)
 		for point in machine.shape:
@@ -287,7 +323,7 @@ func _on_cell_collided() -> void:
 
 func get_point_on_line(from: Vector3, dir: Vector3) -> Vector3:
 	var best := from
-	var score = 2000000
+	var score := 2000000
 	for pos in positions:
 		var d = _is_on_line(pos, from, dir)
 		if d > 0 and d < score:
